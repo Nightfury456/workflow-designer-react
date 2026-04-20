@@ -1,3 +1,4 @@
+<img width="1902" height="970" alt="image" src="https://github.com/user-attachments/assets/8c3bf1a5-57d0-4cda-af7a-97b4883edb29" />
 # 🚀 HR Workflow Designer (React + React Flow)
 
 ## 📌 Overview
