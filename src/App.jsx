@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import ReactFlow, { Background, Controls, addEdge } from "reactflow";
+import React, { useState, useCallback } from "react";
+import ReactFlow, {
+  Background,
+  Controls,
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
+} from "reactflow";
 import "reactflow/dist/style.css";
 
 function App() {
@@ -18,7 +24,18 @@ function App() {
 
   const [edges, setEdges] = useState([]);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [selectedEdge, setSelectedEdge] = useState(null);
   const [logs, setLogs] = useState([]);
+
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [],
+  );
+
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [],
+  );
 
   const onConnect = (params) => {
     setEdges((eds) => addEdge(params, eds));
@@ -42,6 +59,35 @@ function App() {
 
   const onNodeClick = (event, node) => {
     setSelectedNode(node);
+    setSelectedEdge(null);
+  };
+
+  const onEdgeClick = (event, edge) => {
+    setSelectedEdge(edge);
+    setSelectedNode(null);
+  };
+
+  // 🔥 Delete Node (also removes connected edges)
+  const deleteNode = () => {
+    if (!selectedNode) return;
+
+    setNodes((nds) => nds.filter((n) => n.id !== selectedNode.id));
+
+    setEdges((eds) =>
+      eds.filter(
+        (e) => e.source !== selectedNode.id && e.target !== selectedNode.id,
+      ),
+    );
+
+    setSelectedNode(null);
+  };
+
+  // 🔥 Delete Edge (disconnect)
+  const deleteEdge = () => {
+    if (!selectedEdge) return;
+
+    setEdges((eds) => eds.filter((e) => e.id !== selectedEdge.id));
+    setSelectedEdge(null);
   };
 
   const updateField = (field, value) => {
@@ -59,7 +105,6 @@ function App() {
     }));
   };
 
-  // 🚀 SIMULATION LOGIC
   const runWorkflow = () => {
     if (nodes.length === 0) return;
 
@@ -91,7 +136,6 @@ function App() {
         <button onClick={() => addNode("End")}>End</button>
 
         <hr />
-
         <button onClick={runWorkflow}>Run Workflow</button>
       </div>
 
@@ -100,8 +144,13 @@ function App() {
         <ReactFlow
           nodes={nodes}
           edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           onNodeClick={onNodeClick}
+          onEdgeClick={onEdgeClick}
+          panOnDrag={false}
+          fitView
         >
           <Background />
           <Controls />
@@ -110,9 +159,10 @@ function App() {
 
       {/* Right Panel */}
       <div style={{ width: "300px", padding: "10px", background: "#ddd" }}>
-        <h4>Node Settings</h4>
+        <h4>Settings</h4>
 
-        {selectedNode ? (
+        {/* NODE SETTINGS */}
+        {selectedNode && (
           <>
             <p>
               <b>Type:</b> {selectedNode.data.type}
@@ -141,6 +191,8 @@ function App() {
                   value={selectedNode.data.assignee || ""}
                   onChange={(e) => updateField("assignee", e.target.value)}
                 />
+                <br />
+                <br />
               </>
             )}
 
@@ -160,16 +212,35 @@ function App() {
                   value={selectedNode.data.threshold || ""}
                   onChange={(e) => updateField("threshold", e.target.value)}
                 />
+                <br />
+                <br />
               </>
             )}
+
+            <button onClick={deleteNode} style={{ color: "red" }}>
+              Delete Node
+            </button>
           </>
-        ) : (
-          <p>Select a node</p>
         )}
+
+        {/* EDGE SETTINGS */}
+        {selectedEdge && (
+          <>
+            <p>
+              <b>Connection Selected</b>
+            </p>
+
+            <button onClick={deleteEdge} style={{ color: "red" }}>
+              Delete Connection
+            </button>
+          </>
+        )}
+
+        {!selectedNode && !selectedEdge && <p>Select a node or connection</p>}
 
         <hr />
 
-        {/* 🔥 Simulation Logs */}
+        {/* Logs */}
         <h4>Execution Log</h4>
         {logs.length > 0 ? (
           logs.map((log, i) => <p key={i}>{log}</p>)
