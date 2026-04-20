@@ -1,16 +1,113 @@
-# React + Vite
+# 🚀 HR Workflow Designer (React + React Flow)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Overview
 
-Currently, two official plugins are available:
+This project is a visual workflow designer that allows users to create, configure, and simulate HR workflows such as onboarding, approvals, and automated processes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+It is built as a prototype to demonstrate modular frontend architecture, dynamic UI handling, and workflow simulation using a node-based system.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+### 🧩 Workflow Canvas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Interactive node-based canvas using React Flow
+* Create and connect workflow steps visually
+* Pan, zoom, and manage graph structure
+
+### 🔘 Node Types
+
+* Start Node (entry point)
+* Task Node (manual task handling)
+* Approval Node (role-based approval)
+* Automated Node (system actions)
+* End Node (workflow completion)
+
+### ⚙️ Node Configuration Panel
+
+* Click a node to edit its properties
+* Dynamic forms based on node type
+* Real-time updates reflected on canvas
+
+### 🔄 Workflow Simulation
+
+* Execute workflow using "Run Workflow"
+* Generates step-by-step execution logs
+* Simulates real workflow behavior in a sandbox
+
+---
+
+## 🧠 Architecture
+
+The application follows a modular and scalable frontend structure:
+
+* **React Flow** handles graph rendering and interactions
+* **State management** using React hooks (`useState`)
+* **Dynamic forms** rendered conditionally based on node type
+* **Separation of concerns** between UI, logic, and simulation
+
+---
+
+## ⚙️ Tech Stack
+
+* React (Vite)
+* React Flow
+* JavaScript (ES6+)
+* CSS (basic styling)
+
+---
+
+## 🚀 How to Run Locally
+
+```bash
+git clone https://github.com/Nightfury456/hr-workflow-designer.git
+cd hr-workflow-designer
+npm install
+npm run dev
+```
+
+Then open:
+
+```
+http://localhost:5173/
+```
+
+---
+
+## 📌 Key Design Decisions
+
+* Used React Flow for scalable and flexible graph-based UI
+* Kept node data structure extensible for future enhancements
+* Implemented controlled inputs for predictable state updates
+* Simulation logic designed to be lightweight and extendable
+
+---
+
+## 🐞 Challenges & Learnings
+
+* Faced a React Flow compatibility issue ("Invalid hook call")
+* Debugged using browser console and resolved version mismatch (React 18 + React Flow v11)
+* Gained deeper understanding of dependency management and React internals
+
+---
+
+## 🚧 Future Improvements
+
+* Drag-and-drop nodes from sidebar
+* Workflow validation (cycle detection, missing links)
+* Export/Import workflows as JSON
+* Backend integration for persistence
+* Improved UI using Tailwind or design system
+
+---
+
+## 👨‍💻 Author
+
+Aditya
+
+---
+
+## ⭐ If you like this project
+
+Feel free to star the repository and share feedback!
